@@ -12,7 +12,6 @@ public class AsinList {
 //	public AsinList(String id) {
 //		
 //		this.anyId = id;
-//		// TODO Auto-generated constructor stub
 //	}
 
 	public void updateReviewList(String id) {

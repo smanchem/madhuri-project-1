@@ -12,7 +12,7 @@ public class InvertedIndexing {
 	// protected int idCount = 0;
 
 	public InvertedIndexing() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public void reviewIndex(String reviewText, String reviewId) {

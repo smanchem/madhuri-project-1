@@ -16,7 +16,6 @@ import com.google.gson.stream.MalformedJsonException;
 public class AmazonSearch {
 
 	public AmazonSearch() {
-		// TODO Auto-generated constructor stub
 		reviewList = new HashMap<String, String[]>();
 		qaList = new HashMap<String, String[]>();
 		asinList = new HashMap<>();
@@ -27,7 +26,6 @@ public class AmazonSearch {
 	public Map<String, AsinList> asinList;
 
 	public static void main(String[] args) throws Exception, JsonParseException {
-//		System.out.println(System.nanoTime());
 		String reviewId = null;
 		String qaId = null;
 		int count = 0;
@@ -59,7 +57,6 @@ public class AmazonSearch {
 		if (reviews == null || qa == null) {
 			System.out.println("Incorrect input. Please specifiy review and qa parameters");
 		}
-//		System.out.println(reviews + " : " + qa);
 
 		/*
 		 * parsing both reviews file
@@ -104,17 +101,6 @@ public class AmazonSearch {
 				}
 			}
 
-//			System.out.println("the total no of records = " + count);
-
-//			for (String i : jsonP.reviewList.keySet()) {
-//				System.out.println("ReviewId is : " + i + "\n" + "Review Details are : ");
-//				for (String s : jsonP.reviewList.get(i)) {
-//					System.out.println(s);
-//				}
-//
-//				System.out.println("\n \n");
-//			}
-
 		} catch (Exception e) {
 			System.out.println(e);
 			System.out.println("Skipping this Record and continue to Read the file");
@@ -148,10 +134,6 @@ public class AmazonSearch {
 						qaId = asinNum.concat(timeElement.getAsString());
 					}
 
-					// System.out.println(qaId);
-					// System.out.println(reviewId);
-					// System.out.println(reviewTextElement.getAsString());
-					// System.out.println("\n");
 					jsonP.qaList.put(qaId,
 							new String[] { (asinElement.getAsString()).toLowerCase(),
 									(questionTextElement.getAsString()).toLowerCase(),
@@ -170,28 +152,16 @@ public class AmazonSearch {
 					indexObj.qaIndex(tmp, qaId);
 
 				} catch (JsonParseException e) {
-//					System.out.println(e);
+					System.out.println(e);
 				}
 
 			}
-//			System.out.println("the total no of records = " + count);
-//			jsonP.asinList.get("120401325x").printinglist();	
-//			for (String i : jsonP.qaList.keySet()) {
-//				System.out.println("qaId is : " + i + "\n" + "Q&A Details are : ");
-//				for (String s : jsonP.qaList.get(i)) {
-//					System.out.println(s);
-//				}
-//
-//				System.out.println("\n \n");
-//			}
 
 		} catch (IOException e) {
 
 			System.out.println("Skipping this Record and continue to Read the file");
 
 		}
-//		System.out.println("the total no of records = " + count);
-//		System.out.println(System.nanoTime());
 
 		// Ready to run queries
 		UserOptions up = new UserOptions();
@@ -205,8 +175,8 @@ public class AmazonSearch {
 			if (command.equals("exit"))
 				break;
 			String[] queryArgs = command.split(" ");
-			if (queryArgs.length > 2 || queryArgs[1] == null) {
-				System.out.println("The i/p is null. please try again");
+			if (queryArgs.length != 2) {
+				System.out.println("The input is not valid. please try again");
 				up.template();
 			} else {
 				switch (queryArgs[0]) {
