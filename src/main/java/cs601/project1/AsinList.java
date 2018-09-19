@@ -26,12 +26,14 @@ public class AsinList {
 
 	public void printList(AmazonSearch jsonP) {
 
+		HashMap<String, String[]> reviewList = jsonP.getReviewList();
+		HashMap<String, String[]> qaList = jsonP.getQaList();
 		// System.out.println(reviewIdList + "\n");
 		if (!(reviewIdList.isEmpty())) {
 
 			for (String reviewId : reviewIdList) {
-				if (jsonP.reviewList.containsKey(reviewId)) {
-					String[] review = jsonP.reviewList.get(reviewId);
+				if (reviewList.containsKey(reviewId)) {
+					String[] review = reviewList.get(reviewId);
 					for (int i = 1; i < review.length; i++) {
 						System.out.println(review[i]);
 					}
@@ -43,8 +45,8 @@ public class AsinList {
 		if (!(qaIdList.isEmpty())) {
 
 			for (String qaId : qaIdList) {
-				if (jsonP.qaList.containsKey(qaId)) {
-					String[] queAndAns = jsonP.qaList.get(qaId);
+				if (qaList.containsKey(qaId)) {
+					String[] queAndAns = qaList.get(qaId);
 					for (int i = 1; i < queAndAns.length; i++) {
 						System.out.println(queAndAns[i]);
 					}

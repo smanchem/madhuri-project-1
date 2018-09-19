@@ -70,6 +70,7 @@ public class InvertedIndexing {
 	}
 
 	public void searchingReviewTerm(String term, AmazonSearch jsop) {
+		HashMap<String, String[]> reviewList = jsop.getReviewList();
 		this.reviewTerm = term.toLowerCase();
 		if (reviewTerm == null) {
 			System.out.println("The term is null. There are no such terms");
@@ -82,7 +83,7 @@ public class InvertedIndexing {
 				// listOfReviewsAndCount is sorted in descending order by count
 				for (Map.Entry<String, Integer> en : listOfReviewsAndCount) {
 
-					String[] reviewdetails = jsop.reviewList.get(en.getKey());
+					String[] reviewdetails = reviewList.get(en.getKey());
 					for (String s : reviewdetails) {
 						System.out.println(s);
 					}
@@ -96,6 +97,7 @@ public class InvertedIndexing {
 	}
 
 	public void searchingQATerm(String qterm, AmazonSearch jsonp) {
+		HashMap<String, String[]> qaList = jsonp.getQaList();
 		this.qaTerm = qterm.toLowerCase();
 		if (qaTerm == null) {
 			System.out.println("The term is null. There are no such terms");
@@ -108,7 +110,7 @@ public class InvertedIndexing {
 				// listOfReviewsAndCount is sorted in descending order by count
 				for (Map.Entry<String, Integer> en : listOfQaAndCount) {
 
-					String[] qaDetails = jsonp.qaList.get(en.getKey());
+					String[] qaDetails = qaList.get(en.getKey());
 					for (String s : qaDetails) {
 						System.out.println(s);
 					}
@@ -125,6 +127,7 @@ public class InvertedIndexing {
 		if (partialTerm == null) {
 			System.out.println("The term is null. There are no such terms");
 		} else {
+			HashMap<String, String[]> reviewList = jp.getReviewList();
 			for (Map.Entry<String, HashMap<String, Integer>> en : reviewIndexList.entrySet()) {
 				if (en.getKey().indexOf(partialTerm) == -1) {
 					continue;
@@ -136,7 +139,7 @@ public class InvertedIndexing {
 					// listOfReviewsAndCount is sorted in descending order by count
 					for (Map.Entry<String, Integer> pen : listOfReviewsAndCount) {
 
-						String[] reviewdetails = jp.reviewList.get(pen.getKey());
+						String[] reviewdetails = reviewList.get(pen.getKey());
 						for (String s : reviewdetails) {
 							System.out.println(s);
 						}
@@ -152,6 +155,7 @@ public class InvertedIndexing {
 		if (partTerm == null) {
 			System.out.println("The term is null. There are no such terms");
 		} else {
+			HashMap<String, String[]> qaList = jpar.getQaList();
 			for (Map.Entry<String, HashMap<String, Integer>> en : qaIndexList.entrySet()) {
 				if (en.getKey().indexOf(partTerm) == -1) {
 					continue;
@@ -163,7 +167,7 @@ public class InvertedIndexing {
 					// listOfReviewsAndCount is sorted in descending order by count
 					for (Map.Entry<String, Integer> pen : listOfQAAndCount) {
 
-						String[] qadetails = jpar.qaList.get(pen.getKey());
+						String[] qadetails = qaList.get(pen.getKey());
 						for (String s : qadetails) {
 							System.out.println(s);
 						}

@@ -21,21 +21,21 @@ public class AmazonSearch {
 		asinList = new HashMap<>();
 	}
 
-	public Map<String, String[]> reviewList;
-	public Map<String, String[]> qaList;
-	public Map<String, AsinList> asinList;
+	private HashMap<String, String[]> reviewList;
+	private HashMap<String, String[]> qaList;
+	private HashMap<String, AsinList> asinList;
 
+	public HashMap<String, String[]> getReviewList(){
+		return this.reviewList;
+	}
+	public HashMap<String, String[]> getQaList(){
+		return this.qaList;
+	}
+	public HashMap<String, AsinList> getAsinList(){
+		return this.asinList;
+	}
+	
 	public static void main(String[] args) throws Exception, JsonParseException {
-		String reviewId = null;
-		String qaId = null;
-		int count = 0;
-
-		AmazonSearch jsonP = new AmazonSearch();
-
-		JsonParser rpar = new JsonParser();
-		JsonParser qapar = new JsonParser();
-
-		InvertedIndexing indexObj = new InvertedIndexing();
 
 		/*
 		 * command line args validation
@@ -43,7 +43,10 @@ public class AmazonSearch {
 		 */
 
 		String reviews = null, qa = null;
-
+		if(args.length != 4) {
+			System.out.println("Incorrect arguments. Please try again.");
+			return;
+		}
 		if ("-reviews".compareTo(args[0]) == 0) {
 			reviews = args[1];
 		} else if ("-qa".compareTo(args[0]) == 0) {
@@ -64,6 +67,23 @@ public class AmazonSearch {
 		 * ReviewId is to identify each record in the review file
 		 * 
 		 */
+		
+		parseFiles(reviews, qa);
+		return;
+
+	}
+	
+	public static void parseFiles(String reviews, String qa) {
+		String reviewId = null;
+		String qaId = null;
+		int count = 0;
+
+		AmazonSearch jsonP = new AmazonSearch();
+
+		JsonParser rpar = new JsonParser();
+		JsonParser qapar = new JsonParser();
+
+		InvertedIndexing indexObj = new InvertedIndexing();
 
 		try (BufferedReader reviewreader = Files.newBufferedReader(Paths.get(reviews), Charset.forName("ISO-8859-1"))) {
 
@@ -162,54 +182,55 @@ public class AmazonSearch {
 			System.out.println("Skipping this Record and continue to Read the file");
 
 		}
-
+		runQueries(indexObj, jsonP);
+	}
+	
+	public static void runQueries(InvertedIndexing indexObj, AmazonSearch jsonP) {
 		// Ready to run queries
-		UserOptions up = new UserOptions();
-		up.template();
-
-		// Accept command line input
-		Scanner sc = new Scanner(System.in);
-		String command = "";
-		while (true) {
-			command = sc.nextLine();
-			if (command.equals("exit"))
-				break;
-			String[] queryArgs = command.split(" ");
-			if (queryArgs.length != 2) {
-				System.out.println("The input is not valid. please try again");
+				UserOptions up = new UserOptions();
 				up.template();
-			} else {
-				switch (queryArgs[0]) {
-				case "find":
-					asinSearch(queryArgs[1].toLowerCase(), jsonP);
-					up.template();
-					break;
-				case "reviewsearch":
-					indexObj.searchingReviewTerm(queryArgs[1].toLowerCase(), jsonP);
-					up.template();
-					break;
-				case "qasearch":
-					indexObj.searchingQATerm(queryArgs[1].toLowerCase(), jsonP);
-					up.template();
-					break;
-				case "reviewpartialsearch":
-					indexObj.reviewPatialSearch(queryArgs[1].toLowerCase(), jsonP);
-					up.template();
-					break;
-				case "qapartialsearch":
-					indexObj.qaPatialSearch(queryArgs[1].toLowerCase(), jsonP);
-					up.template();
-					break;
-				default:
-					System.out.println("Only the following options are available:");
-					up.template();
+
+				// Accept command line input
+				Scanner sc = new Scanner(System.in);
+				String command = "";
+				while (true) {
+					command = sc.nextLine();
+					if (command.equals("exit"))
+						break;
+					String[] queryArgs = command.split(" ");
+					if (queryArgs.length != 2) {
+						System.out.println("The input is not valid. please try again");
+						up.template();
+					} else {
+						switch (queryArgs[0]) {
+						case "find":
+							asinSearch(queryArgs[1].toLowerCase(), jsonP);
+							up.template();
+							break;
+						case "reviewsearch":
+							indexObj.searchingReviewTerm(queryArgs[1].toLowerCase(), jsonP);
+							up.template();
+							break;
+						case "qasearch":
+							indexObj.searchingQATerm(queryArgs[1].toLowerCase(), jsonP);
+							up.template();
+							break;
+						case "reviewpartialsearch":
+							indexObj.reviewPatialSearch(queryArgs[1].toLowerCase(), jsonP);
+							up.template();
+							break;
+						case "qapartialsearch":
+							indexObj.qaPatialSearch(queryArgs[1].toLowerCase(), jsonP);
+							up.template();
+							break;
+						default:
+							System.out.println("Only the following options are available:");
+							up.template();
+						}
+					}
+
 				}
-			}
-
-		}
-		sc.close();
-		return;
-
+				sc.close();
 	}
 
 	public static void asinSearch(String asin, AmazonSearch jsonP) {
